@@ -1,10 +1,14 @@
 import React from 'react';
 
+import { Button } from '../../components';
+
 const App = (): JSX.Element => {
   return (
-    <div>
-      <h1>Popup Page</h1>
-      <p>If you are seeing this, React is working!</p>
+    <div className="container w-full h-full bg-gray-100">
+      <Button
+        text="Add"
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => console.log(e)}
+      />
     </div>
   );
 };
