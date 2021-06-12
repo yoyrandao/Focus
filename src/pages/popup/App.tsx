@@ -4,7 +4,7 @@ import { List, Button } from '../../components';
 import { Rule } from '../../common';
 
 const App = (): JSX.Element => {
-  const [locked, setLock] = useState<boolean>(true);
+  const [locked, setLock] = useState<boolean>(false);
   const [rules, setRules] = useState<Rule[]>([]);
 
   return (
@@ -25,19 +25,26 @@ const App = (): JSX.Element => {
 
       <hr className="h-0.5 bg-black" />
 
-      {/*to context*/}
-      <List rules={rules} updateRules={setRules} />
+      {/* more styling */}
+      <div
+        className={`${locked ? 'pointer-events-none' : 'pointer-events-auto'}`}
+      >
+        {/*to context*/}
+        <List rules={rules} updateRules={setRules} />
 
-      <div className="w-full">
-        <div className="w-32 m-auto">
-          <Button
-            text="ADD"
-            onClick={() =>
-              setRules((state) =>
-                state.concat([{ link: 'http://aboba1.link', name: 'aboba1' }]),
-              )
-            }
-          />
+        <div className="w-full">
+          <div className="w-32 m-auto">
+            <Button
+              text="ADD"
+              onClick={() =>
+                setRules((state) =>
+                  state.concat([
+                    { link: 'http://aboba1.link', name: 'aboba1' },
+                  ]),
+                )
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

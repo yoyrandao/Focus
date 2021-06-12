@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 interface ListItemProps {
   name: string;
   link: string;
-  index?: number;
+  index: number;
   deleteAction?: (i: number) => void;
 }
 
@@ -29,7 +29,7 @@ const ListItem: React.FC<ListItemProps> = ({
         <button
           className="focus:outline-none"
           onClick={() => {
-            deleteAction?.(index!);
+            deleteAction?.(index);
           }}
         >
           Click
