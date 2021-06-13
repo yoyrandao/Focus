@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 interface Rule {
   name: string;
   link: string;
@@ -7,7 +5,7 @@ interface Rule {
 
 interface RulesProps {
   rules: Rule[];
-  updateRules?: Dispatch<SetStateAction<Rule[]>>;
+  updateRules?: (_: Rule[]) => void;
 }
 
 export { Rule, RulesProps };

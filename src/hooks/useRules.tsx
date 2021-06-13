@@ -1,22 +1,16 @@
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  PropsWithChildren,
-  useState,
-  useContext,
-} from 'react';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { Rule } from '../common';
+import { useLocalStorage } from './useLocalStorage';
 
 const RulesContext = createContext<Rule[]>([]);
-const RulesActionContext = createContext<
-  Dispatch<SetStateAction<Rule[]>> | undefined
->(undefined);
+const RulesActionContext = createContext<((_: Rule[]) => void) | undefined>(
+  undefined,
+);
 
 const RulesProvider = ({
   children,
 }: PropsWithChildren<unknown>): JSX.Element => {
-  const [rules, setRules] = useState<Rule[]>([]);
+  const [rules, setRules] = useLocalStorage<Rule[]>('rules', []);
 
   return (
     <RulesContext.Provider value={rules}>
@@ -27,7 +21,7 @@ const RulesProvider = ({
   );
 };
 
-const useRules = (): [Rule[], Dispatch<SetStateAction<Rule[]>>] => {
+const useRules = (): [Rule[], (_: Rule[]) => void] => {
   const rulesContext = useContext(RulesContext);
   const rulesActionContext = useContext(RulesActionContext);
 

@@ -37,8 +37,8 @@ const App = (): JSX.Element => {
             <Button
               text="ADD"
               onClick={() =>
-                updateRules((state) =>
-                  state.concat([
+                updateRules(
+                  rules.concat([
                     { link: 'http://aboba1.link', name: 'aboba1' },
                   ]),
                 )

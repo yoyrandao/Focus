@@ -13,7 +13,7 @@ const List: React.FC<RulesProps> = ({ rules, updateRules }: RulesProps) => {
           name={x.name}
           link={x.link}
           deleteAction={(i) => {
-            updateRules?.((rules) => rules.filter((_, index) => index != i));
+            updateRules?.(rules.filter((_, index) => index != i));
           }}
         />
       ))}
