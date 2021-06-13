@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 import { List, Button } from '../../components';
-import { Rule } from '../../common';
+import { useRules } from '../../hooks/useRules';
 
 const App = (): JSX.Element => {
   const [locked, setLock] = useState<boolean>(false);
-  const [rules, setRules] = useState<Rule[]>([]);
+
+  const [rules, updateRules] = useRules();
 
   return (
     <div className="container w-full h-full bg-gray-50">
@@ -29,15 +30,14 @@ const App = (): JSX.Element => {
       <div
         className={`${locked ? 'pointer-events-none' : 'pointer-events-auto'}`}
       >
-        {/*to context*/}
-        <List rules={rules} updateRules={setRules} />
+        <List rules={rules} updateRules={updateRules} />
 
         <div className="w-full">
           <div className="w-32 m-auto">
             <Button
               text="ADD"
               onClick={() =>
-                setRules((state) =>
+                updateRules((state) =>
                   state.concat([
                     { link: 'http://aboba1.link', name: 'aboba1' },
                   ]),

@@ -2,8 +2,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
 
-console.log('popup script');
+import { RulesProvider } from '../../hooks/useRules';
 
-const root = document.querySelector('#root');
-
-render(<App />, root);
+render(
+  <RulesProvider>
+    <App />
+  </RulesProvider>,
+  document.querySelector('#root'),
+);
