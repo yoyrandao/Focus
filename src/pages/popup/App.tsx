@@ -1,12 +1,50 @@
 import React, { useState } from 'react';
+import { Window } from '../../common';
 
-import { List, Button } from '../../components';
+import { List, Button, RuleAddingDialog } from '../../components';
+
 import { useRules } from '../../hooks/useRules';
+import { useWindow } from '../../hooks/useWindow';
 
 const App = (): JSX.Element => {
+  const resolveContent = (window: Window): JSX.Element => {
+    switch (window) {
+      case 'adding-window':
+        return <RuleAddingDialog />;
+
+      case 'main-window':
+        return (
+          <div
+            className={`${
+              locked ? 'pointer-events-none' : 'pointer-events-auto'
+            }`}
+          >
+            {/*more styling */}
+            <List rules={rules} updateRules={updateRules} />
+
+            <div className="w-full">
+              <div className="w-32 m-auto">
+                <Button
+                  text="ADD"
+                  onClick={() => setCurrentWindow('adding-window')}
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'minigame-window':
+        return <></>;
+
+      default:
+        return <></>;
+    }
+  };
+
   const [locked, setLock] = useState<boolean>(false);
 
   const [rules, updateRules] = useRules();
+  const [currentWindow, setCurrentWindow] = useWindow();
 
   return (
     <div className="container w-full h-full bg-gray-50">
@@ -26,27 +64,7 @@ const App = (): JSX.Element => {
 
       <hr className="h-0.5 bg-black" />
 
-      {/* more styling */}
-      <div
-        className={`${locked ? 'pointer-events-none' : 'pointer-events-auto'}`}
-      >
-        <List rules={rules} updateRules={updateRules} />
-
-        <div className="w-full">
-          <div className="w-32 m-auto">
-            <Button
-              text="ADD"
-              onClick={() =>
-                updateRules(
-                  rules.concat([
-                    { link: 'http://aboba1.link', name: 'aboba1' },
-                  ]),
-                )
-              }
-            />
-          </div>
-        </div>
-      </div>
+      {resolveContent(currentWindow)}
     </div>
   );
 };

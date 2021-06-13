@@ -8,4 +8,6 @@ interface RulesProps {
   updateRules?: (_: Rule[]) => void;
 }
 
-export { Rule, RulesProps };
+type Window = 'main-window' | 'adding-window' | 'minigame-window';
+
+export { Rule, RulesProps, Window };

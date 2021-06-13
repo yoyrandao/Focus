@@ -3,10 +3,13 @@ import { render } from 'react-dom';
 import App from './App';
 
 import { RulesProvider } from '../../hooks/useRules';
+import { WindowProvider } from '../../hooks/useWindow';
 
 render(
-  <RulesProvider>
-    <App />
-  </RulesProvider>,
+  <WindowProvider>
+    <RulesProvider>
+      <App />
+    </RulesProvider>
+  </WindowProvider>,
   document.querySelector('#root'),
 );
