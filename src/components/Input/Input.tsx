@@ -7,7 +7,7 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ onChange }: InputProps) => {
   return (
     <div>
-      <input onChange={onChange} />
+      <input className="outline-none bg-none text-2xl" onChange={onChange} />
     </div>
   );
 };

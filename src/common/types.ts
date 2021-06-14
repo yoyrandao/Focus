@@ -5,9 +5,15 @@ interface Rule {
 
 interface RulesProps {
   rules: Rule[];
-  updateRules?: (_: Rule[]) => void;
+  updateRules?: (_: Rule[], _f: (_a: Rule[]) => void) => void;
+}
+
+interface ChromeMessage {
+  type: MessageType;
 }
 
 type Window = 'main-window' | 'adding-window' | 'minigame-window';
 
-export { Rule, RulesProps, Window };
+type MessageType = 'SET_RULES';
+
+export { Rule, RulesProps, Window, MessageType, ChromeMessage };

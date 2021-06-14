@@ -3,9 +3,9 @@ import { Rule } from '../common';
 import { useLocalStorage } from './useLocalStorage';
 
 const RulesContext = createContext<Rule[]>([]);
-const RulesActionContext = createContext<((_: Rule[]) => void) | undefined>(
-  undefined,
-);
+const RulesActionContext = createContext<
+  ((_: Rule[], _f?: (_a: Rule[]) => void) => void) | undefined
+>(undefined);
 
 const RulesProvider = ({
   children,
@@ -21,7 +21,10 @@ const RulesProvider = ({
   );
 };
 
-const useRules = (): [Rule[], (_: Rule[]) => void] => {
+const useRules = (): [
+  Rule[],
+  (_: Rule[], _f?: (_a: Rule[]) => void) => void,
+] => {
   const rulesContext = useContext(RulesContext);
   const rulesActionContext = useContext(RulesActionContext);
 
