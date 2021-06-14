@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { ListItem } from '../ListItem';
-import { RulesProps } from '../../common';
+import { RulesProps } from '../../lib/types';
 
-import { sendMessage } from '../../common/messaging';
+import { sendMessage } from '../../lib/messaging';
 
 const List: React.FC<RulesProps> = ({ rules, updateRules }: RulesProps) => {
   return (

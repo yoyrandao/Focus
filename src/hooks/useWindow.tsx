@@ -6,7 +6,7 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { Window } from '../common';
+import { Window } from '../lib/types';
 
 const WindowContext = createContext<Window>('main-window');
 const WindowActionContext = createContext<
@@ -31,7 +31,7 @@ const useWindow = (): [Window, Dispatch<SetStateAction<Window>>] => {
   const windowContext = useContext(WindowContext);
   const windowActionContext = useContext(WindowActionContext);
 
-  if (windowContext === undefined || windowActionContext == undefined) {
+  if (!windowContext || !windowActionContext) {
     throw new Error('useWindow must be inside provider');
   }
 

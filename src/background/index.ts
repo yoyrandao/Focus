@@ -1,7 +1,7 @@
-import { ChromeMessage, Rule } from '../common/types';
-import { extendUrl, getDomain, getName } from '../common/url';
-import { LocalStorageRulesKey } from '../common/types';
-import { sendMessage } from '../common/messaging';
+import { ChromeMessage, Rule, LocalStorageRulesKey } from '../lib/types';
+import { extendUrl, getDomain, getName } from '../lib/url';
+import { sendMessage } from '../lib/messaging';
+import { getStorageItem, setStorageItem } from '../lib/storage';
 
 const callback = () => {
   return {
@@ -31,10 +31,7 @@ application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
   message = message as ChromeMessage;
 
   if (message.type === 'SET_RULES') {
-    const data: Rule[] = JSON.parse(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      window.localStorage.getItem(LocalStorageRulesKey)!,
-    );
+    const data: Rule[] = getStorageItem<Rule[]>(LocalStorageRulesKey) || [];
 
     if (data?.length === 0) {
       console.log(data);
@@ -50,19 +47,26 @@ application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
   }
 
   if (message.type === 'ADD_CURRENT') {
-    const data: Rule[] =
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      JSON.parse(window.localStorage.getItem('rules')!) || [];
+    const data: Rule[] = getStorageItem<Rule[]>(LocalStorageRulesKey) || [];
 
     application.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      if (!tab) {
+        return;
+      }
+
+      console.log(getDomain(tab.url));
+      console.log(getName(tab.url));
+
+      return;
+
       data.push({
         link: getDomain(tab.url),
         name: getName(tab.url).toUpperCase(),
       });
 
-      window.localStorage.setItem(LocalStorageRulesKey, JSON.stringify(data));
-
+      setStorageItem(LocalStorageRulesKey, data);
       registerBlockingRules(data);
+
       sendMessage('SET_LOCALLY');
 
       return;

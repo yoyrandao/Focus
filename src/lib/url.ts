@@ -8,18 +8,25 @@ const extendUrl = (url: string): string | undefined => {
   return `*://*.${url}/*`;
 };
 
+// FIX!!!!!!
+
 const getDomain = (url: string | undefined): string => {
   if (!url) {
     return '';
   }
 
-  return new URL(url).hostname.replace('www', '');
+  return new URL(url).hostname.replace('www.', '');
 };
 
 const getName = (url: string | undefined): string => {
-  const domain = getDomain(url);
+  if (!url) {
+    return '';
+  }
 
-  return domain.substring(0, domain.lastIndexOf('.')).replace('.', ' ');
+  return url
+    .replace('www.', '')
+    .substring(0, url.lastIndexOf('.'))
+    .replace('.', ' ');
 };
 
 export { extendUrl, getDomain, getName };

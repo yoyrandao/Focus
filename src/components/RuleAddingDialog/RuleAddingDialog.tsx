@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useRules } from '../../hooks/useRules';
 import { useWindow } from '../../hooks/useWindow';
-import { sendMessage } from '../../common/messaging';
+import { sendMessage } from '../../lib/messaging';
+import { getName } from '../../lib/url';
 import { Button } from '../Button';
 import { Input } from '../Input';
 
@@ -19,8 +20,9 @@ const RuleAddingDialog: React.FC = () => {
   const addTabAsRule = () => {
     // validation
 
-    updateRules(rules.concat([{ name: newValue, link: newValue }]), () =>
-      sendMessage('SET_RULES'),
+    updateRules(
+      rules.concat([{ name: getName(newValue).toUpperCase(), link: newValue }]),
+      () => sendMessage('SET_RULES'),
     );
     setCurrentWindow('main-window');
   };

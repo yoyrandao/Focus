@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getStorageItem, setStorageItem } from '../lib/storage';
 
 const useLocalStorage = <T>(
   key: string,
@@ -6,9 +7,7 @@ const useLocalStorage = <T>(
 ): [T, (_v: T, _f?: (_a: T) => void) => void] => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      const item = window.localStorage.getItem(key);
-
-      return item ? JSON.parse(item) : initialValue;
+      return getStorageItem(key) || initialValue;
     } catch (error) {
       console.log(error);
       return initialValue;
@@ -19,9 +18,10 @@ const useLocalStorage = <T>(
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
 
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      setStoredValue(valueToStore);
+      setStorageItem(key, valueToStore);
+
       completeFunc?.(valueToStore);
     } catch (error) {
       console.log(error);

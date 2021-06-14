@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Window } from '../../common';
+import { Window } from '../../lib/types';
 
 import { List, Button, RuleAddingDialog } from '../../components';
 
