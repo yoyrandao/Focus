@@ -1,5 +1,7 @@
-import { Rule } from '../common/types';
-import { extendUrl } from '../common/strings';
+import { ChromeMessage, Rule } from '../common/types';
+import { extendUrl, getDomain, getName } from '../common/url';
+import { LocalStorageRulesKey } from '../common/types';
+import { sendMessage } from '../common/messaging';
 
 const callback = () => {
   return {
@@ -7,13 +9,32 @@ const callback = () => {
   };
 };
 
-const applicaton = chrome || browser;
+const registerBlockingRules = (rules: Rule[]): void => {
+  const rulesLinks = rules
+    .map((x) => extendUrl(x.link))
+    .filter((x) => x !== undefined)
+    .map((x) => x as string);
+
+  chrome.webRequest.onBeforeRequest.addListener(
+    callback,
+    {
+      urls: rulesLinks,
+    },
+    ['blocking'],
+  );
+};
+
+const application = chrome || browser;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-applicaton.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
-  if (request.type === 'SET_RULES') {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const data: Rule[] = JSON.parse(window.localStorage.getItem('rules')!);
+application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
+  message = message as ChromeMessage;
+
+  if (message.type === 'SET_RULES') {
+    const data: Rule[] = JSON.parse(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      window.localStorage.getItem(LocalStorageRulesKey)!,
+    );
 
     if (data?.length === 0) {
       console.log(data);
@@ -24,21 +45,31 @@ applicaton.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
       return;
     }
 
-    const rulesLinks = data
-      .map((x) => extendUrl(x.link))
-      .filter((x) => x !== undefined)
-      .map((x) => x as string);
+    registerBlockingRules(data);
+    return;
+  }
 
-    chrome.webRequest.onBeforeRequest.addListener(
-      callback,
-      {
-        urls: rulesLinks,
-      },
-      ['blocking'],
-    );
+  if (message.type === 'ADD_CURRENT') {
+    const data: Rule[] =
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      JSON.parse(window.localStorage.getItem('rules')!) || [];
+
+    application.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      data.push({
+        link: getDomain(tab.url),
+        name: getName(tab.url).toUpperCase(),
+      });
+
+      window.localStorage.setItem(LocalStorageRulesKey, JSON.stringify(data));
+
+      registerBlockingRules(data);
+      sendMessage('SET_LOCALLY');
+
+      return;
+    });
   }
 });
 
-applicaton.runtime.onInstalled.addListener(() => {
+application.runtime.onInstalled.addListener(() => {
   console.log('Background worker instantiated.');
 });

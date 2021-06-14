@@ -14,6 +14,15 @@ interface ChromeMessage {
 
 type Window = 'main-window' | 'adding-window' | 'minigame-window';
 
-type MessageType = 'SET_RULES';
+type MessageType = 'SET_RULES' | 'ADD_CURRENT' | 'SET_LOCALLY';
 
-export { Rule, RulesProps, Window, MessageType, ChromeMessage };
+const LocalStorageRulesKey = 'rules';
+
+export {
+  Rule,
+  RulesProps,
+  Window,
+  MessageType,
+  ChromeMessage,
+  LocalStorageRulesKey,
+};

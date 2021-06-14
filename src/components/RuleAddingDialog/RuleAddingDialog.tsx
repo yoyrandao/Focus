@@ -10,6 +10,21 @@ const RuleAddingDialog: React.FC = () => {
 
   const [rules, updateRules] = useRules();
   const [, setCurrentWindow] = useWindow();
+
+  const addCurrentTabAsRule = () => {
+    sendMessage('ADD_CURRENT');
+    setCurrentWindow('main-window');
+  };
+
+  const addTabAsRule = () => {
+    // validation
+
+    updateRules(rules.concat([{ name: newValue, link: newValue }]), () =>
+      sendMessage('SET_RULES'),
+    );
+    setCurrentWindow('main-window');
+  };
+
   return (
     <div>
       <div className="h-10">
@@ -26,22 +41,13 @@ const RuleAddingDialog: React.FC = () => {
         <div className="w-full">
           <div className="w-32 m-auto">
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-            <Button text="ADD CURRENT" onClick={() => {}} />
+            <Button text="ADD CURRENT" onClick={addCurrentTabAsRule} />
             <Input
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setNewValue(e.target.value)
               }
             />
-            <Button
-              text="ADD"
-              onClick={() => {
-                updateRules(
-                  rules.concat([{ name: newValue, link: newValue }]),
-                  () => sendMessage('SET_RULES'),
-                );
-                setCurrentWindow('main-window');
-              }}
-            />
+            <Button text="ADD" onClick={addTabAsRule} />
           </div>
         </div>
       </div>
