@@ -1,4 +1,5 @@
-import { ChromeMessage } from '../common/types';
+import { Rule } from '../common/types';
+import { extendUrl } from '../common/strings';
 
 const callback = () => {
   return {
@@ -10,15 +11,12 @@ const applicaton = chrome || browser;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 applicaton.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
-  console.log((request as ChromeMessage).type);
-
-  const data = window.localStorage.getItem('rules');
-  console.log(data);
-
-  return;
-
   if (request.type === 'SET_RULES') {
-    if (request.data.rules.length === 0) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const data: Rule[] = JSON.parse(window.localStorage.getItem('rules')!);
+
+    if (data?.length === 0) {
+      console.log(data);
       if (chrome.webRequest.onBeforeRequest.hasListeners()) {
         chrome.webRequest.onBeforeRequest.removeListener(callback);
       }
@@ -26,10 +24,15 @@ applicaton.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
       return;
     }
 
+    const rulesLinks = data
+      .map((x) => extendUrl(x.link))
+      .filter((x) => x !== undefined)
+      .map((x) => x as string);
+
     chrome.webRequest.onBeforeRequest.addListener(
       callback,
       {
-        urls: request.data.rules,
+        urls: rulesLinks,
       },
       ['blocking'],
     );
