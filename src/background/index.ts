@@ -1,5 +1,5 @@
 import { ChromeMessage, Rule, LocalStorageRulesKey } from '../lib/types';
-import { extendUrl, getDomain, getName } from '../lib/url';
+import { extendUrl, isValidUrl, extractDomainAndName } from '../lib/url';
 import { sendMessage } from '../lib/messaging';
 import { getStorageItem, setStorageItem } from '../lib/storage';
 
@@ -54,14 +54,14 @@ application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
         return;
       }
 
-      console.log(getDomain(tab.url));
-      console.log(getName(tab.url));
+      if (!isValidUrl(tab.url || '')) {
+        return;
+      }
 
-      return;
-
+      const [domain, name]: string[] = extractDomainAndName(tab.url || '');
       data.push({
-        link: getDomain(tab.url),
-        name: getName(tab.url).toUpperCase(),
+        link: domain,
+        name: name.toUpperCase(),
       });
 
       setStorageItem(LocalStorageRulesKey, data);

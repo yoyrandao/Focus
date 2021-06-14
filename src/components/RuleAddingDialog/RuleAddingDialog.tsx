@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRules } from '../../hooks/useRules';
 import { useWindow } from '../../hooks/useWindow';
 import { sendMessage } from '../../lib/messaging';
-import { getName } from '../../lib/url';
+import { isValidUrl, extractDomainAndName } from '../../lib/url';
 import { Button } from '../Button';
 import { Input } from '../Input';
 
@@ -18,10 +18,15 @@ const RuleAddingDialog: React.FC = () => {
   };
 
   const addTabAsRule = () => {
-    // validation
+    if (!isValidUrl) {
+      // some action
+      return;
+    }
+
+    const [, name]: string[] = extractDomainAndName(newValue);
 
     updateRules(
-      rules.concat([{ name: getName(newValue).toUpperCase(), link: newValue }]),
+      rules.concat([{ name: name.toUpperCase(), link: newValue }]),
       () => sendMessage('SET_RULES'),
     );
     setCurrentWindow('main-window');

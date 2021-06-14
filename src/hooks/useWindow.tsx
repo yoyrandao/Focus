@@ -16,7 +16,7 @@ const WindowActionContext = createContext<
 const WindowProvider = ({
   children,
 }: PropsWithChildren<unknown>): JSX.Element => {
-  const [currentWindow, setCurrentWindow] = useState<Window>('adding-window');
+  const [currentWindow, setCurrentWindow] = useState<Window>('main-window');
 
   return (
     <WindowContext.Provider value={currentWindow}>
