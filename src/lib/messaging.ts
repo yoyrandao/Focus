@@ -1,11 +1,10 @@
-import { ChromeMessage, MessageType } from './types';
+import { application } from './application';
+import { ChromeEvent, MessageType } from './types';
 
 const sendMessage = (type: MessageType): void => {
-  const application = chrome || browser;
-
   application.runtime.sendMessage({
     type: type,
-  } as ChromeMessage);
+  } as ChromeEvent);
 };
 
 export { sendMessage };

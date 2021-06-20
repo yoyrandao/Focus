@@ -1,13 +1,23 @@
-import { ChromeMessage, Rule, LocalStorageRulesKey } from '../lib/types';
-import { extendUrl, isValidUrl, extractDomainAndName } from '../lib/url';
+import { application } from '../lib/application';
 import { sendMessage } from '../lib/messaging';
 import { getStorageItem, setStorageItem } from '../lib/storage';
+import { ChromeEvent, Rule, LocalStorageRulesKey } from '../lib/types';
+import { extendUrl, isValidUrl, extractDomainAndName } from '../lib/url';
+
+/*
+ * Helpful functions
+ */
 
 const callback = () => {
+  // change to redirect to custom page
   return {
     cancel: true,
   };
 };
+
+/*
+ * Additional functions
+ */
 
 const registerBlockingRules = (rules: Rule[]): void => {
   const rulesLinks = rules
@@ -24,54 +34,68 @@ const registerBlockingRules = (rules: Rule[]): void => {
   );
 };
 
-const application = chrome || browser;
+const handleSettingRules = (): void => {
+  const data: Rule[] = getStorageItem<Rule[]>(LocalStorageRulesKey) || [];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
-  message = message as ChromeMessage;
-
-  if (!message) return;
-
-  if (message.type === 'SET_RULES') {
-    const data: Rule[] = getStorageItem<Rule[]>(LocalStorageRulesKey) || [];
-
-    if (data?.length === 0) {
-      if (chrome.webRequest.onBeforeRequest.hasListeners()) {
-        chrome.webRequest.onBeforeRequest.removeListener(callback);
-      }
-
-      return;
+  if (data?.length === 0) {
+    if (chrome.webRequest.onBeforeRequest.hasListeners()) {
+      chrome.webRequest.onBeforeRequest.removeListener(callback);
     }
 
-    registerBlockingRules(data);
     return;
   }
 
-  if (message.type === 'ADD_CURRENT') {
-    const data: Rule[] = getStorageItem<Rule[]>(LocalStorageRulesKey) || [];
+  registerBlockingRules(data);
+};
 
-    application.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      if (!tab) {
-        return;
-      }
+const handleAddingCurrent = () => {
+  const data: Rule[] = getStorageItem<Rule[]>(LocalStorageRulesKey) || [];
 
-      if (!isValidUrl(tab.url || '')) {
-        return;
-      }
-
-      const [domain, name]: string[] = extractDomainAndName(tab.url || '');
-      data.push({
-        link: domain,
-        name: name.toUpperCase(),
-      });
-
-      setStorageItem(LocalStorageRulesKey, data);
-      registerBlockingRules(data);
-
-      sendMessage('SET_LOCALLY');
-
+  application.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+    if (!tab) {
       return;
+    }
+
+    if (!isValidUrl(tab.url || '')) {
+      return;
+    }
+
+    const [domain, name]: string[] = extractDomainAndName(tab.url || '');
+    data.push({
+      link: domain,
+      name: name.toUpperCase(),
     });
+
+    setStorageItem(LocalStorageRulesKey, data);
+    registerBlockingRules(data);
+
+    sendMessage('SET_LOCALLY');
+
+    return;
+  });
+};
+
+/*
+ * Application Event Handling
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
+  const event = message as ChromeEvent;
+
+  if (!event) return;
+
+  switch (event.type) {
+    case 'SET_RULES':
+      handleSettingRules();
+      break;
+
+    case 'ADD_CURRENT':
+      handleAddingCurrent();
+      break;
+
+    default:
+      return;
   }
 });
 

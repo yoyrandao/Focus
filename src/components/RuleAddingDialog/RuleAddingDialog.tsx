@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useRules } from '../../hooks/useRules';
 import { useWindow } from '../../hooks/useWindow';
+
 import { sendMessage } from '../../lib/messaging';
 import { isValidUrl, extractDomainAndName } from '../../lib/url';
+
 import { Button } from '../Button';
 import { Input } from '../Input';
 
@@ -24,10 +26,14 @@ const RuleAddingDialog: React.FC = () => {
       return;
     }
 
-    const [, name]: string[] = extractDomainAndName(newValue);
+    const [domain, name]: string[] = extractDomainAndName(newValue);
+
+    if (rules.filter((x) => x.link === domain).length > 0) {
+      return;
+    }
 
     updateRules(
-      rules.concat([{ name: name.toUpperCase(), link: newValue }]),
+      rules.concat([{ name: name.toUpperCase(), link: domain }]),
       () => sendMessage('SET_RULES'),
     );
     setCurrentWindow('main-window');

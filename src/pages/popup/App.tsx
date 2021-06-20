@@ -22,10 +22,10 @@ const App = (): JSX.Element => {
             {/*more styling */}
             <List rules={rules} updateRules={updateRules} />
 
-            <div className="w-full">
-              <div className="w-32 m-auto">
+            <div className="w-full h-10">
+              <div className="w-32 h-full m-auto">
                 <Button
-                  text="ADD"
+                  text="NEW"
                   onClick={() => setCurrentWindow('adding-window')}
                 />
               </div>
@@ -48,7 +48,10 @@ const App = (): JSX.Element => {
 
   return (
     <div className="container w-full h-full bg-gray-50">
-      <div className="container w-full h-10 bg-blue-100 px-5 flex flex-row justify-between place-items-center">
+      <div
+        style={{ height: '10%' }}
+        className="container w-full bg-blue-100 px-5 flex flex-row justify-between place-items-center"
+      >
         <p className="text-2xl">Focus!</p>
         <button
           className="w-7 h-7 focus:outline-none outline-none border-0"
@@ -64,7 +67,7 @@ const App = (): JSX.Element => {
 
       <hr className="h-0.5 bg-black" />
 
-      {resolveContent(currentWindow)}
+      <div style={{ height: '90%' }}>{resolveContent(currentWindow)}</div>
     </div>
   );
 };

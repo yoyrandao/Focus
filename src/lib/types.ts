@@ -8,7 +8,7 @@ interface RulesProps {
   updateRules?: (_: Rule[], _f: (_a: Rule[]) => void) => void;
 }
 
-interface ChromeMessage {
+interface ChromeEvent {
   type: MessageType;
 }
 
@@ -23,6 +23,6 @@ export {
   RulesProps,
   Window,
   MessageType,
-  ChromeMessage,
+  ChromeEvent,
   LocalStorageRulesKey,
 };

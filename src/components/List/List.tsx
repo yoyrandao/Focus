@@ -7,7 +7,7 @@ import { sendMessage } from '../../lib/messaging';
 
 const List: React.FC<RulesProps> = ({ rules, updateRules }: RulesProps) => {
   return (
-    <div className="container p-2 w-full m-1 h-64 overflow-auto">
+    <div className="container p-2 w-full h-64 overflow-auto">
       {rules.map((x, i) => (
         <ListItem
           key={i}

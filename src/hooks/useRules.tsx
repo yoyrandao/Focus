@@ -1,6 +1,9 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
-import { ChromeMessage, LocalStorageRulesKey, Rule } from '../lib/types';
+
+import { application } from '../lib/application';
 import { getStorageItem } from '../lib/storage';
+import { ChromeEvent, LocalStorageRulesKey, Rule } from '../lib/types';
+
 import { useLocalStorage } from './useLocalStorage';
 
 const RulesContext = createContext<Rule[]>([]);
@@ -33,8 +36,8 @@ const useRules = (): [
     throw new Error('useRules must be inside provider');
   }
 
-  (chrome || browser).runtime.onMessage.addListener((message) => {
-    if ((message as ChromeMessage).type === 'SET_LOCALLY') {
+  application.runtime.onMessage.addListener((message) => {
+    if ((message as ChromeEvent).type === 'SET_LOCALLY') {
       rulesActionContext(getStorageItem<Rule[]>(LocalStorageRulesKey) || []);
     }
   });
