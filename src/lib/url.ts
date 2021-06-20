@@ -28,8 +28,6 @@ const extendUrl = (url: string): string | undefined => {
   }
 
   const [domain] = extractDomainAndName(url);
-  console.log(domain);
-
   return `*://*.${domain}/*`;
 };
 

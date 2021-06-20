@@ -14,7 +14,9 @@ interface ChromeEvent {
 
 type Window = 'main-window' | 'adding-window' | 'minigame-window';
 
-type MessageType = 'SET_RULES' | 'ADD_CURRENT' | 'SET_LOCALLY';
+type MessageType = 'set-rules' | 'add-current' | 'set-locally';
+
+type IconType = 'lock-closed' | 'lock-opened' | 'back-arrow';
 
 const LocalStorageRulesKey = 'rules';
 
@@ -22,6 +24,7 @@ export {
   Rule,
   RulesProps,
   Window,
+  IconType,
   MessageType,
   ChromeEvent,
   LocalStorageRulesKey,

@@ -8,7 +8,7 @@ import { extendUrl, isValidUrl, extractDomainAndName } from '../lib/url';
  * Helpful functions
  */
 
-const callback = () => {
+const listenerAction = () => {
   // change to redirect to custom page
   return {
     cancel: true,
@@ -26,7 +26,7 @@ const registerBlockingRules = (rules: Rule[]): void => {
     .map((x) => x as string);
 
   chrome.webRequest.onBeforeRequest.addListener(
-    callback,
+    listenerAction,
     {
       urls: rulesLinks,
     },
@@ -39,7 +39,7 @@ const handleSettingRules = (): void => {
 
   if (data?.length === 0) {
     if (chrome.webRequest.onBeforeRequest.hasListeners()) {
-      chrome.webRequest.onBeforeRequest.removeListener(callback);
+      chrome.webRequest.onBeforeRequest.removeListener(listenerAction);
     }
 
     return;
@@ -60,7 +60,7 @@ const handleAddingCurrent = () => {
       return;
     }
 
-    const [domain, name]: string[] = extractDomainAndName(tab.url || '');
+    const [domain, name]: string[] = extractDomainAndName(tab.url!);
     data.push({
       link: domain,
       name: name.toUpperCase(),
@@ -69,7 +69,7 @@ const handleAddingCurrent = () => {
     setStorageItem(LocalStorageRulesKey, data);
     registerBlockingRules(data);
 
-    sendMessage('SET_LOCALLY');
+    sendMessage('set-locally');
 
     return;
   });
@@ -86,11 +86,11 @@ application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
   if (!event) return;
 
   switch (event.type) {
-    case 'SET_RULES':
+    case 'set-rules':
       handleSettingRules();
       break;
 
-    case 'ADD_CURRENT':
+    case 'add-current':
       handleAddingCurrent();
       break;
 

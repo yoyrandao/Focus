@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ListItem } from '../ListItem';
+import { ListItem } from '../list-item';
 import { RulesProps } from '../../lib/types';
 
 import { sendMessage } from '../../lib/messaging';
@@ -17,7 +17,7 @@ const List: React.FC<RulesProps> = ({ rules, updateRules }: RulesProps) => {
           deleteAction={(i) => {
             updateRules?.(
               rules.filter((_, index) => index != i),
-              () => sendMessage('SET_RULES'),
+              () => sendMessage('set-rules'),
             );
           }}
         />

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+
 import { useRules } from '../../hooks/useRules';
 import { useWindow } from '../../hooks/useWindow';
+import { useEvents } from '../../hooks/useEvents';
 
-import { sendMessage } from '../../lib/messaging';
 import { isValidUrl, extractDomainAndName } from '../../lib/url';
 
-import { Button } from '../Button';
-import { Input } from '../Input';
+import { Button } from '../button';
+import { Input } from '../input';
+import { IconedButton } from '../iconed-button/IconedButton';
 
 const RuleAddingDialog: React.FC = () => {
   const [newValue, setNewValue] = useState<string>('');
@@ -14,9 +16,10 @@ const RuleAddingDialog: React.FC = () => {
 
   const [rules, updateRules] = useRules();
   const [, setCurrentWindow] = useWindow();
+  const { addCurrent, setRules } = useEvents();
 
   const addCurrentTabAsRule = () => {
-    sendMessage('ADD_CURRENT');
+    addCurrent();
     setCurrentWindow('main-window');
   };
 
@@ -34,7 +37,7 @@ const RuleAddingDialog: React.FC = () => {
 
     updateRules(
       rules.concat([{ name: name.toUpperCase(), link: domain }]),
-      () => sendMessage('SET_RULES'),
+      setRules,
     );
     setCurrentWindow('main-window');
   };
@@ -43,12 +46,10 @@ const RuleAddingDialog: React.FC = () => {
     <div>
       <div className="h-10">
         <div className="p-2 text-lg">
-          <button
-            className="focus:outline-none"
+          <IconedButton
             onClick={() => setCurrentWindow('main-window')}
-          >
-            ⬅
-          </button>
+            type="back-arrow"
+          />
         </div>
       </div>
       <div className="fixed bottom-4 h-2/3">

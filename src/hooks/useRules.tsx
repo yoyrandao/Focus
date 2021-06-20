@@ -37,7 +37,7 @@ const useRules = (): [
   }
 
   application.runtime.onMessage.addListener((message) => {
-    if ((message as ChromeEvent).type === 'SET_LOCALLY') {
+    if ((message as ChromeEvent).type === 'set-locally') {
       rulesActionContext(getStorageItem<Rule[]>(LocalStorageRulesKey) || []);
     }
   });

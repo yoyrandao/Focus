@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+
 import { Window } from '../../lib/types';
 
 import { List, Button, RuleAddingDialog } from '../../components';
 
 import { useRules } from '../../hooks/useRules';
 import { useWindow } from '../../hooks/useWindow';
+import { IconedButton } from '../../components/iconed-button/IconedButton';
 
 const App = (): JSX.Element => {
   const resolveContent = (window: Window): JSX.Element => {
@@ -53,16 +55,12 @@ const App = (): JSX.Element => {
         className="container w-full bg-blue-100 px-5 flex flex-row justify-between place-items-center"
       >
         <p className="text-2xl">Focus!</p>
-        <button
-          className="w-7 h-7 focus:outline-none outline-none border-0"
-          onClick={() => setLock(!locked)}
-        >
-          {locked ? (
-            <img src="../../icons/lock.png" alt="Locked" />
-          ) : (
-            <img src="../../icons/openedLock.png" alt="Unlocked" />
-          )}
-        </button>
+        <div className="w-7 h-7">
+          <IconedButton
+            onClick={() => setLock(!locked)}
+            type={locked ? 'lock-closed' : 'lock-opened'}
+          />
+        </div>
       </div>
 
       <hr className="h-0.5 bg-black" />

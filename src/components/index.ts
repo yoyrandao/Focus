@@ -1,7 +1,8 @@
-export * from './Input';
-export * from './Button';
+export * from './input';
+export * from './button';
+export * from './iconed-button';
 
-export * from './List';
-export * from './ListItem';
+export * from './list';
+export * from './list-item';
 
-export * from './RuleAddingDialog';
+export * from './rule-adding-dialog';
