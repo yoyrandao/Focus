@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IconedButton } from '../iconed-button';
 
 interface ListItemProps {
   name: string;
@@ -26,14 +27,9 @@ const ListItem: React.FC<ListItemProps> = ({
         <p className="text-center text-sm text-gray-700">{link}</p>
       </div>
       {isShown && (
-        <button
-          className="focus:outline-none"
-          onClick={() => {
-            deleteAction?.(index);
-          }}
-        >
-          Click
-        </button>
+        <div className="fixed right-0 m-4 z-2">
+          <IconedButton onClick={() => deleteAction?.(index)} type="trash" />
+        </div>
       )}
     </div>
   );

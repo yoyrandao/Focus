@@ -16,7 +16,7 @@ type Window = 'main-window' | 'adding-window' | 'minigame-window';
 
 type MessageType = 'set-rules' | 'add-current' | 'set-locally';
 
-type IconType = 'lock-closed' | 'lock-opened' | 'back-arrow';
+type IconType = 'lock-closed' | 'lock-opened' | 'back-arrow' | 'trash';
 
 const LocalStorageRulesKey = 'rules';
 
