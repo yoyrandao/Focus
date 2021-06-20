@@ -27,7 +27,10 @@ const extendUrl = (url: string): string | undefined => {
     return;
   }
 
-  return `*://*.${url}/*`;
+  const [domain] = extractDomainAndName(url);
+  console.log(domain);
+
+  return `*://*.${domain}/*`;
 };
 
 export { isValidUrl, extractDomainAndName, extendUrl };

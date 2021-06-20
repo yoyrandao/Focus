@@ -8,6 +8,7 @@ import { Input } from '../Input';
 
 const RuleAddingDialog: React.FC = () => {
   const [newValue, setNewValue] = useState<string>('');
+  const [validation, setValidation] = useState<string>('');
 
   const [rules, updateRules] = useRules();
   const [, setCurrentWindow] = useWindow();
@@ -18,8 +19,8 @@ const RuleAddingDialog: React.FC = () => {
   };
 
   const addTabAsRule = () => {
-    if (!isValidUrl) {
-      // some action
+    if (!isValidUrl(newValue)) {
+      setValidation('Url is not valid');
       return;
     }
 
@@ -44,17 +45,26 @@ const RuleAddingDialog: React.FC = () => {
           </button>
         </div>
       </div>
-      <div>
-        <div className="w-full">
-          <div className="w-32 m-auto">
-            {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
+      <div className="fixed bottom-4 h-2/3">
+        <div className="w-4/5 h-full m-auto flex flex-col justify-around">
+          <div className="w-full h-10">
             <Button text="ADD CURRENT" onClick={addCurrentTabAsRule} />
-            <Input
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setNewValue(e.target.value)
-              }
-            />
+          </div>
+          <div>
+            <label htmlFor="rule-input">OR:</label>
+            <span id="rule-input">
+              <Input
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNewValue(e.target.value)
+                }
+              />
+            </span>
+          </div>
+          <div className="w-full h-10">
             <Button text="ADD" onClick={addTabAsRule} />
+          </div>
+          <div className="w-full h-2">
+            <p className="text-red-500 text-center text-sm">{validation}</p>
           </div>
         </div>
       </div>

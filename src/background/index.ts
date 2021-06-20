@@ -30,11 +30,12 @@ const application = chrome || browser;
 application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
   message = message as ChromeMessage;
 
+  if (!message) return;
+
   if (message.type === 'SET_RULES') {
     const data: Rule[] = getStorageItem<Rule[]>(LocalStorageRulesKey) || [];
 
     if (data?.length === 0) {
-      console.log(data);
       if (chrome.webRequest.onBeforeRequest.hasListeners()) {
         chrome.webRequest.onBeforeRequest.removeListener(callback);
       }
