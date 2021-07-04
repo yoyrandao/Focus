@@ -102,3 +102,7 @@ application.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
 application.runtime.onInstalled.addListener(() => {
   console.log('Background worker instantiated.');
 });
+
+application.runtime.onStartup.addListener(() => {
+  handleSettingRules();
+});
