@@ -26,7 +26,7 @@ const App = (): JSX.Element => {
               <List rules={rules} updateRules={updateRules} />
             </div>
 
-            <div className="w-full h-1/5 flex justify-center items-center">
+            <div className="w-full h-1/5 flex justify-center">
               <div className="w-32 h-10 m-auto">
                 <Button
                   text="NEW"
