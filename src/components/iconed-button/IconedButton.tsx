@@ -1,5 +1,6 @@
 import React from 'react';
-import { FaLock, FaLockOpen, FaArrowLeft, FaTrash } from 'react-icons/fa';
+import { FaLock, FaLockOpen, FaArrowLeft } from 'react-icons/fa';
+import { TiDelete } from 'react-icons/ti';
 
 import { IconType } from '../../lib/types';
 
@@ -15,7 +16,7 @@ const resolveIcon = (type: IconType): JSX.Element => {
       return <FaArrowLeft size="25px" />;
 
     case 'trash':
-      return <FaTrash size="25px" />;
+      return <TiDelete size="25px" />;
 
     default:
       return <></>;

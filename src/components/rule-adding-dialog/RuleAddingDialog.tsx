@@ -16,6 +16,7 @@ const RuleAddingDialog: React.FC = () => {
   const [validation, setValidation] = useState<string>('');
 
   const inputRef = useFocus<HTMLInputElement>(null);
+
   const [rules, updateRules] = useRules();
   const [, setCurrentWindow] = useWindow();
   const { addCurrent, setRules } = useEvents();
