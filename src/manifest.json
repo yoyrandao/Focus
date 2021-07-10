@@ -5,7 +5,8 @@
     "persistent": true
   },
   "browser_action": {
-    "default_popup": "pages/popup/index.html"
+    "default_popup": "pages/popup/index.html",
+    "default_icon": "public/icons/icon.png"
   },
   "permissions": [
     "activeTab",
