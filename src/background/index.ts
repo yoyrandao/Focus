@@ -1,8 +1,11 @@
 import { application } from '../lib/application';
 import { sendMessage } from '../lib/messaging';
+
 import { getStorageItem, setStorageItem } from '../lib/storage';
-import { ChromeEvent, Rule, LocalStorageRulesKey } from '../lib/types';
 import { extendUrl, isValidUrl, extractDomainAndName } from '../lib/url';
+
+import { ChromeEvent, Rule } from '../lib/types';
+import { LocalStorageRulesKey } from '../lib/keys';
 
 /*
  * Helpful functions

@@ -2,7 +2,9 @@ import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { application } from '../lib/application';
 import { getStorageItem } from '../lib/storage';
-import { ChromeEvent, LocalStorageRulesKey, Rule } from '../lib/types';
+
+import { ChromeEvent, Rule } from '../lib/types';
+import { LocalStorageRulesKey } from '../lib/keys';
 
 import { useLocalStorage } from './useLocalStorage';
 

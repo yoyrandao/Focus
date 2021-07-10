@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Window } from '../../lib/types';
+import { LocalStorageLockKey } from '../../lib/keys';
 
-import { List, Button, RuleAddingDialog } from '../../components';
+import { List, Button, RuleAddingDialog, IconedButton } from '../../components';
 
 import { useRules } from '../../hooks/useRules';
 import { useWindow } from '../../hooks/useWindow';
-import { IconedButton } from '../../components/iconed-button/IconedButton';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 const App = (): JSX.Element => {
   const resolveContent = (window: Window): JSX.Element => {
@@ -18,14 +19,15 @@ const App = (): JSX.Element => {
         return (
           <div
             className={`${
-              locked ? 'pointer-events-none' : 'pointer-events-auto'
-            }`}
+              locked ? 'pointer-events-auto' : 'pointer-events-none'
+            } h-full`}
           >
-            {/*more styling */}
-            <List rules={rules} updateRules={updateRules} />
+            <div className="h-4/5">
+              <List rules={rules} updateRules={updateRules} />
+            </div>
 
-            <div className="w-full h-10">
-              <div className="w-32 h-full m-auto">
+            <div className="w-full h-1/5 flex justify-center items-center">
+              <div className="w-32 h-10 m-auto">
                 <Button
                   text="NEW"
                   onClick={() => setCurrentWindow('adding-window')}
@@ -43,7 +45,7 @@ const App = (): JSX.Element => {
     }
   };
 
-  const [locked, setLock] = useState<boolean>(false);
+  const [locked, setLock] = useLocalStorage(LocalStorageLockKey, true);
 
   const [rules, updateRules] = useRules();
   const [currentWindow, setCurrentWindow] = useWindow();
@@ -51,8 +53,8 @@ const App = (): JSX.Element => {
   return (
     <div className="container w-full h-full bg-gray-50">
       <div
-        style={{ height: '10%' }}
-        className="container w-full bg-blue-100 px-5 flex flex-row justify-between place-items-center"
+        style={{ height: '10%', backgroundColor: '#D3EEDE' }}
+        className="container w-full px-5 flex flex-row justify-between place-items-center"
       >
         <p className="text-2xl">Focus!</p>
         <div className="w-7 h-7">
@@ -62,8 +64,6 @@ const App = (): JSX.Element => {
           />
         </div>
       </div>
-
-      <hr className="h-0.5 bg-black" />
 
       <div style={{ height: '90%' }}>{resolveContent(currentWindow)}</div>
     </div>

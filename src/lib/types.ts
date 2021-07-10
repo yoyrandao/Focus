@@ -18,14 +18,4 @@ type MessageType = 'set-rules' | 'add-current' | 'set-locally';
 
 type IconType = 'lock-closed' | 'lock-opened' | 'back-arrow' | 'trash';
 
-const LocalStorageRulesKey = 'rules';
-
-export {
-  Rule,
-  RulesProps,
-  Window,
-  IconType,
-  MessageType,
-  ChromeEvent,
-  LocalStorageRulesKey,
-};
+export { Rule, RulesProps, Window, IconType, MessageType, ChromeEvent };

@@ -18,19 +18,20 @@ const ListItem: React.FC<ListItemProps> = ({
 
   return (
     <div
-      className="w-full shadow-md mt-2 h-12 text-base flex flex-row justify-around"
+      className="w-full mt-2 h-12
+                 rounded-xl
+                 shadow text-base
+                 flex flex-row justify-between"
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
     >
-      <div>
+      <div className="flex-grow overflow-hidden">
         <p className="text-center text-lg">{name}</p>
         <p className="text-center text-sm text-gray-700">{link}</p>
       </div>
-      {isShown && (
-        <div className="fixed right-0 m-4 z-2">
-          <IconedButton onClick={() => deleteAction?.(index)} type="trash" />
-        </div>
-      )}
+      <div className={`${isShown ? 'block' : 'hidden'} mr-3`}>
+        <IconedButton onClick={() => deleteAction?.(index)} type="trash" />
+      </div>
     </div>
   );
 };
