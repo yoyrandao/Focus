@@ -1,6 +1,6 @@
 const pattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
-    '(?<full_domain>((?<name>[a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+    '(?<full_domain>(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
     '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
     '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
@@ -19,7 +19,12 @@ const extractDomainAndName = (url: string): string[] => {
     return [];
   }
 
-  return [match.groups['full_domain'], match.groups['name']];
+  const domain = match.groups['full_domain'];
+
+  return [
+    match.groups['full_domain'],
+    domain.substring(0, domain.lastIndexOf('.')).replace('.', ' '),
+  ];
 };
 
 const extendUrl = (url: string): string | undefined => {
