@@ -8,7 +8,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({ text, onClick }: ButtonProps) => {
   return (
     <button
-      style={{ backgroundColor: '#D3EEDE' }}
+      style={{ backgroundColor: '#C6E1D1' }}
       className="
         cringe transition duration-300 ease-in-out hover:bg-green-200
         w-full h-full
